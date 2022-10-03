@@ -49,7 +49,7 @@ class Exp:
         disper = eqAvg - math.pow(eAvg, 2)
         sigma = math.sqrt(disper)
 
-        lg = self.log2(t)
+        lg = self.log2(t) + 1
         minList = min(e)
         maxList = max(e)
         deltaList = maxList - minList
@@ -58,7 +58,7 @@ class Exp:
         intervals = []
         tmpList = minList
         i = 0
-        while (i < lg):
+        while (i < lg - 1):
             tmpList = tmpList + step
             intervals.append(tmpList)
             i += 1
@@ -117,7 +117,7 @@ class Exp:
         while (i < len(intervals)):
             P.append(self.FI(intervals[i] / sigma) - self.FI(intervals[i-1] / sigma))
             i += 1
-        P.append(0.5 - self.FI(intervals[len(intervals)-1]) / sigma)
+        P.append(0.5 - self.FI(intervals[len(intervals)-1]/sigma))
         print("P: ", P)
         Psum = 0.0
         i = 0
@@ -138,12 +138,12 @@ class Exp:
             i += 1
         print("nStsum: ", nStsum)
 
-        sumobs = sum(obs)
-        delta = sumobs - nStsum
-        if (delta > 0):
-            nSt[nSt.index(min(nSt))] += delta
-        else:
-            nSt[nSt.index(max(nSt))] -= delta
+        # sumobs = sum(obs)
+        # delta = sumobs - nStsum
+        # if (delta > 0):
+        #     nSt[nSt.index(min(nSt))] += delta
+        # else:
+        #     nSt[nSt.index(max(nSt))] -= delta
 
         K, p = scp.stats.chisquare(obs, nSt, ddof=1)
         print("K =", K, "; p =", p)
